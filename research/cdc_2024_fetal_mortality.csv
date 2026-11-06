@@ -1,0 +1,28 @@
+# Source: CDC NCHS, Fetal Mortality: United States 2024 (NVSR 75-6) https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-06.pdf — rates per 1,000 live births + fetal deaths, 20+ weeks
+table,group,total_per_1000,early_20_27,late_28plus
+overall,All races,5.44,2.89,2.57
+age,15-19,7.41,4.13,3.31
+age,Under 20 (Table 5),7.43,,
+age,20-24,5.45,2.84,2.62
+age,25-29,4.89,2.54,2.36
+age,30-34,4.98,2.67,2.33
+age,35-39,5.96,3.19,2.79
+age,40-44,8.12,4.38,3.77
+age,45+,10.73,6.40,4.39
+age,40-54 (Table 5),8.30,,
+race,AIAN,7.77,,
+race,Asian,3.89,2.17,1.72
+race,Black,10.00,5.72,4.34
+race,NHPI,10.21,,
+race,White,4.55,2.34,2.23
+race,Hispanic,4.63,2.42,2.22
+tobacco,Smoker (all),10.30,,
+tobacco,Nonsmoker (all),4.84,,
+tobacco_x_age,Smoker 35-39,12.94,,
+tobacco_x_age,Smoker 40-54,15.21,,
+tobacco_x_age,Nonsmoker 40-54,7.42,,
+tobacco_x_age,Smoker 20-24,8.54,,
+tobacco_x_age,Nonsmoker 20-24,4.89,,
+plurality,Single,5.24,,
+plurality,Twin,11.45,,
+plurality,Triplet+,19.33,,

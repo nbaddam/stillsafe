@@ -1,0 +1,1298 @@
+{
+  "version": "0.2.0-demo",
+  "definition": "Stillbirth at 28+ weeks (WHO international definition), per 1,000 total births",
+  "caps": {
+    "maxCombinedOR": 6,
+    "downstreamShrink": 0.7
+  },
+  "pm25": {
+    "orPer10": 1.1,
+    "source": {
+      "label": "Zhang et al. 2021, Environmental Pollution",
+      "url": "https://www.aminer.org/pub/604b4252ec47cda532dcec0c/ambient-air-pollution-and-stillbirth-an-updated-systematic-review-and-meta-analysis"
+    }
+  },
+  "factors": [
+    {
+      "id": "age",
+      "label": "Age",
+      "question": "How old are you?",
+      "type": "number",
+      "unit": "years",
+      "group": "About you",
+      "scored": true,
+      "optional": false,
+      "importance": "Medium",
+      "why": "Risk is lowest in the mid-20s to early 30s and rises gradually after 35, and more after 40, partly because placental and blood-pressure problems become more common.",
+      "how_used": "Placed in an age band (under 20, 20–34, 35–39, 40+) to adjust your estimate. Stays on your device for scoring.",
+      "bands": [
+        {
+          "value": "lt20",
+          "label": "Under 20",
+          "max": 19,
+          "or": 1.3
+        },
+        {
+          "value": "20_34",
+          "label": "20–34",
+          "max": 34,
+          "or": 1.0
+        },
+        {
+          "value": "35_39",
+          "label": "35–39",
+          "max": 39,
+          "or": 1.4
+        },
+        {
+          "value": "40p",
+          "label": "40+",
+          "max": 200,
+          "or": 1.9
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Flenady et al. 2011, Lancet; CDC NVSR 2024 age table",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21496916/"
+      }
+    },
+    {
+      "id": "height",
+      "label": "Height",
+      "question": "How tall are you? (cm, or feet and inches like 5'4\")",
+      "type": "height",
+      "group": "About you",
+      "scored": false,
+      "optional": false,
+      "importance": "Medium",
+      "why": "Used with your weight to work out body mass index (BMI). Higher BMI before pregnancy is the most common changeable risk factor in high-income countries.",
+      "how_used": "Combined with weight to calculate BMI. The height itself isn't scored.",
+      "approx": false,
+      "source": {
+        "label": "Flenady et al. 2011, Lancet",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21496916/"
+      }
+    },
+    {
+      "id": "weight",
+      "label": "Pre-pregnancy weight",
+      "question": "About how much did you weigh before this pregnancy? (kg or lb)",
+      "type": "weight",
+      "group": "About you",
+      "scored": false,
+      "optional": false,
+      "importance": "Medium",
+      "why": "Body weight before pregnancy affects blood sugar, blood pressure and how well the placenta works.",
+      "how_used": "Combined with height to calculate BMI, which adjusts your estimate. Pregnancy weight gain isn't used.",
+      "approx": false,
+      "source": {
+        "label": "CRIBSS IPD meta-analysis (aOR 1.03 per BMI unit)",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6543252/table/t0010"
+      }
+    },
+    {
+      "id": "bmi",
+      "label": "BMI (from height and weight)",
+      "type": "derived",
+      "group": "About you",
+      "scored": true,
+      "optional": false,
+      "importance": "Medium",
+      "why": "Higher BMI before pregnancy raises stillbirth risk steadily, about 3% per BMI unit. It is the leading changeable factor in high-income countries.",
+      "how_used": "Calculated from height and weight, then placed in a band to adjust your estimate.",
+      "bands": [
+        {
+          "value": "under",
+          "label": "Under 18.5",
+          "max": 18.49,
+          "or": 1.1
+        },
+        {
+          "value": "normal",
+          "label": "18.5–24.9",
+          "max": 24.99,
+          "or": 1.0
+        },
+        {
+          "value": "over",
+          "label": "25–29.9",
+          "max": 29.99,
+          "or": 1.2
+        },
+        {
+          "value": "obese1",
+          "label": "30–34.9",
+          "max": 34.99,
+          "or": 1.5
+        },
+        {
+          "value": "obese2",
+          "label": "35+",
+          "max": 999,
+          "or": 1.9
+        }
+      ],
+      "upstream_of": [
+        "preexisting_diabetes",
+        "gestational_diabetes",
+        "hypertension"
+      ],
+      "approx": true,
+      "source": {
+        "label": "Flenady et al. 2011; CRIBSS IPD",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6543252/table/t0010"
+      }
+    },
+    {
+      "id": "country",
+      "label": "Country",
+      "question": "Which country do you live in?",
+      "type": "country",
+      "group": "About you",
+      "scored": true,
+      "optional": false,
+      "importance": "High",
+      "why": "Stillbirth rates differ about 20-fold between countries, mostly because of differences in access to care during pregnancy and birth.",
+      "how_used": "Sets your starting rate from WHO / UN IGME country estimates. Everything else adjusts up or down from there.",
+      "approx": true,
+      "source": {
+        "label": "UN IGME stillbirth estimates (UNICEF, WHO, World Bank, UN)",
+        "url": "https://pmnch.who.int/resources/publications/m/item/unigme-stillbirth-database-and-estimates"
+      }
+    },
+    {
+      "id": "city",
+      "label": "City",
+      "question": "Which city or area? (optional — used only for air quality)",
+      "type": "city",
+      "group": "About you",
+      "scored": true,
+      "optional": true,
+      "importance": "Low",
+      "why": "Long-term exposure to fine-particle air pollution (PM2.5) is linked to slightly higher stillbirth risk, about 10% per 10 µg/m³.",
+      "how_used": "We look up your city's yearly average PM2.5 from the WHO Air Quality Database and compare it with your country's average. Only the city name is used — never your exact location.",
+      "approx": true,
+      "source": {
+        "label": "WHO Ambient Air Quality Database; Zhang et al. 2021",
+        "url": "https://www.who.int/data/gho/data/themes/air-pollution/who-air-quality-database"
+      }
+    },
+    {
+      "id": "race",
+      "label": "Race / ethnicity (US only, optional)",
+      "question": "If you live in the US: how would you describe your race or ethnicity? This is optional.",
+      "type": "choice",
+      "group": "About you",
+      "scored": true,
+      "optional": true,
+      "usOnly": true,
+      "importance": "Medium",
+      "why": "In the US, Black and Pacific Islander mothers have about twice the stillbirth rate of White, Hispanic or Asian mothers. Researchers link this mainly to differences in access to care, stress and living conditions — not biology.",
+      "how_used": "Only used to choose a more accurate US starting rate from CDC data. Not used outside the US. If you skip it, we use the US average, so your estimate may be a little less precise. Never stored or shared.",
+      "options": [
+        {
+          "value": "black",
+          "label": "Black"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "hispanic",
+          "label": "Hispanic / Latina"
+        },
+        {
+          "value": "asian",
+          "label": "Asian"
+        },
+        {
+          "value": "nhpi",
+          "label": "Native Hawaiian / Pacific Islander"
+        },
+        {
+          "value": "aian",
+          "label": "American Indian / Alaska Native"
+        },
+        {
+          "value": "skip",
+          "label": "Prefer not to say"
+        }
+      ],
+      "approx": false,
+      "source": {
+        "label": "CDC, Fetal Mortality: United States 2024 (NVSR 75-6)",
+        "url": "https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-06.pdf"
+      }
+    },
+    {
+      "id": "multiple",
+      "label": "Twins or more",
+      "question": "Are you expecting one baby, or twins or more?",
+      "type": "choice",
+      "group": "This pregnancy",
+      "scored": true,
+      "optional": false,
+      "importance": "High",
+      "why": "Twin pregnancies have about twice the stillbirth rate of single pregnancies, mainly from shared-placenta and growth problems.",
+      "how_used": "Adjusts your estimate. Twin pregnancies get extra monitoring — ask your provider about the schedule.",
+      "options": [
+        {
+          "value": "single",
+          "label": "One baby",
+          "or": 1.0
+        },
+        {
+          "value": "twins",
+          "label": "Twins or more",
+          "or": 2.2
+        }
+      ],
+      "approx": false,
+      "source": {
+        "label": "CDC NVSR 2024: twin 11.45 vs single 5.24 per 1,000",
+        "url": "https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-06.pdf"
+      }
+    },
+    {
+      "id": "parity",
+      "label": "Previous births",
+      "question": "How many babies have you given birth to before (after 20 weeks)?",
+      "type": "choice",
+      "group": "Pregnancy history",
+      "scored": true,
+      "optional": false,
+      "importance": "Low",
+      "why": "First pregnancies carry a slightly higher risk, as do pregnancies after many births.",
+      "how_used": "Small adjustment to your estimate.",
+      "options": [
+        {
+          "value": "0",
+          "label": "None — this is my first",
+          "or": 1.2
+        },
+        {
+          "value": "1_2",
+          "label": "1–2",
+          "or": 1.0
+        },
+        {
+          "value": "3p",
+          "label": "3 or more",
+          "or": 1.2
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Flenady et al. 2011 (primiparity ~15% of stillbirths)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21496916/"
+      }
+    },
+    {
+      "id": "prior_stillbirth",
+      "label": "Previous stillbirth",
+      "question": "Have you had a stillbirth before (a baby who died after 20 weeks)?",
+      "type": "choice",
+      "group": "Pregnancy history",
+      "scored": true,
+      "optional": false,
+      "importance": "High",
+      "why": "A previous stillbirth raises the chance in a later pregnancy about 3 times, partly because some causes can recur. Most people who've had a stillbirth go on to have a healthy baby.",
+      "how_used": "The strongest single adjustment. If a cause wasn't found, the increase is smaller. This is a good reason to ask about extra monitoring.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes_explained",
+          "label": "Yes — a cause was found",
+          "or": 3.38
+        },
+        {
+          "value": "yes_unexplained",
+          "label": "Yes — no cause found / not sure",
+          "or": 1.83
+        }
+      ],
+      "approx": false,
+      "source": {
+        "label": "Lamont et al. 2015, BMJ (pooled aOR 3.38)",
+        "url": "https://www.pubmed.gov/26109551/"
+      }
+    },
+    {
+      "id": "prior_complication",
+      "label": "Past pregnancy complications",
+      "question": "In a past pregnancy, did you have a preterm birth, a small baby, placental abruption, or preeclampsia?",
+      "type": "choice",
+      "group": "Pregnancy history",
+      "scored": true,
+      "optional": false,
+      "importance": "Medium",
+      "why": "Problems with the placenta or baby's growth can recur in later pregnancies.",
+      "how_used": "Adjusts your estimate and adds a question for your provider about growth scans.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No / not applicable",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 1.6
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Systematic review: risk after previous adverse birth outcomes",
+        "url": "https://core.ac.uk/download/195684613.pdf"
+      }
+    },
+    {
+      "id": "prior_miscarriage",
+      "label": "Earlier pregnancy losses",
+      "question": "Have you had any miscarriages or pregnancy losses before 20 weeks?",
+      "type": "choice",
+      "group": "Pregnancy history",
+      "scored": true,
+      "optional": false,
+      "importance": "Low",
+      "why": "In a large US study led by the University of Utah and partners (SCRN), a history of earlier pregnancy loss was one of the few factors known at the start of pregnancy that was linked to stillbirth.",
+      "how_used": "Small adjustment. Three or more losses also adds a question for your provider about recurrent-loss testing.",
+      "options": [
+        {
+          "value": "0",
+          "label": "None",
+          "or": 1.0
+        },
+        {
+          "value": "1_2",
+          "label": "1–2",
+          "or": 1.1
+        },
+        {
+          "value": "3p",
+          "label": "3 or more",
+          "or": 1.4
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "SCRN Writing Group 2011, JAMA (risk factors at the start of pregnancy)",
+        "url": "https://www.eurekalert.org/news-releases/767241"
+      }
+    },
+    {
+      "id": "family_history",
+      "label": "Stillbirth in the family",
+      "question": "Has anyone in your family or your partner's family had a stillbirth (for example a mother, sister, or a brother's partner)?",
+      "type": "choice",
+      "group": "Pregnancy history",
+      "scored": true,
+      "optional": true,
+      "importance": "Low",
+      "why": "University of Utah research using 40 years of family records found stillbirth runs in some families, on both the mother's and the father's side. The added risk is small (about 1.1–1.2×).",
+      "how_used": "Small adjustment. It also adds a question about whether genetic counselling makes sense for you.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 1.15
+        },
+        {
+          "value": "unsure",
+          "label": "Not sure",
+          "or": 1.0
+        }
+      ],
+      "approx": false,
+      "source": {
+        "label": "Workalemahu et al. 2022, BJOG (Utah Population Database)",
+        "url": "https://essopenarchive.org/doi/full/10.22541/au.164528537.77215283/v1"
+      }
+    },
+    {
+      "id": "preexisting_diabetes",
+      "label": "Diabetes before pregnancy",
+      "question": "Did you have type 1 or type 2 diabetes before this pregnancy?",
+      "type": "choice",
+      "group": "Health",
+      "scored": true,
+      "optional": false,
+      "importance": "High",
+      "why": "Diabetes that started before pregnancy affects the baby's growth and the placenta. Good blood-sugar control lowers the risk.",
+      "how_used": "Adjusts your estimate. Reduced if your BMI is also high, so the same risk isn't counted twice.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 2.5
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Flenady et al. 2011, Lancet",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21496916/"
+      }
+    },
+    {
+      "id": "gestational_diabetes",
+      "label": "Gestational diabetes",
+      "question": "Have you been diagnosed with gestational diabetes in this pregnancy?",
+      "type": "choice",
+      "group": "Health",
+      "scored": true,
+      "optional": false,
+      "importance": "Low",
+      "why": "Diabetes that starts during pregnancy carries a smaller added risk than pre-existing diabetes, especially when it's well managed.",
+      "how_used": "Small adjustment. \"Not tested yet\" is treated as no.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 1.1
+        },
+        {
+          "value": "not_tested",
+          "label": "Not tested yet",
+          "or": 1.0
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Flenady et al. 2011, Lancet",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21496916/"
+      }
+    },
+    {
+      "id": "hypertension",
+      "label": "High blood pressure / preeclampsia",
+      "question": "Do you have high blood pressure, or have you been told you have preeclampsia?",
+      "type": "choice",
+      "group": "Health",
+      "scored": true,
+      "optional": false,
+      "importance": "Medium",
+      "why": "High blood pressure can reduce blood flow through the placenta.",
+      "how_used": "Adjusts your estimate. Reduced if your BMI is also high. Sudden severe headache or vision changes are warning signs — call your provider.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 1.8
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Flenady et al. 2011, Lancet",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21496916/"
+      }
+    },
+    {
+      "id": "small_baby",
+      "label": "Baby measuring small",
+      "question": "Has your provider told you the baby is measuring small or not growing as expected?",
+      "type": "choice",
+      "group": "Health",
+      "scored": true,
+      "optional": false,
+      "importance": "High",
+      "why": "A baby that isn't growing well is the factor most strongly linked to stillbirth, because it often signals a placenta problem. It's also something your care team can watch closely.",
+      "how_used": "Adjusts your estimate. Reduced if you smoke, so the same risk isn't counted twice.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 3.0
+        },
+        {
+          "value": "unknown",
+          "label": "Don't know",
+          "or": 1.0
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Flenady et al. 2011 (SGA ~23% of stillbirths)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21496916/"
+      }
+    },
+    {
+      "id": "prenatal_care",
+      "label": "Prenatal care",
+      "question": "Have you been able to go to your prenatal check-ups so far?",
+      "type": "choice",
+      "group": "Health",
+      "scored": true,
+      "optional": false,
+      "importance": "Medium",
+      "why": "Regular check-ups catch problems like slow growth or high blood pressure early. More-than-adequate care is linked to lower risk.",
+      "how_used": "Adjusts your estimate, and we'll suggest ways to get to the next visit.",
+      "options": [
+        {
+          "value": "regular",
+          "label": "Yes, on schedule",
+          "or": 1.0
+        },
+        {
+          "value": "some_missed",
+          "label": "Some missed",
+          "or": 1.3
+        },
+        {
+          "value": "none",
+          "label": "Not yet / none",
+          "or": 2.0
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "IPD secondary analysis (antenatal-care utilisation)",
+        "url": "https://searchworks.jioinstitute.edu.in/articles/edb__164879588"
+      }
+    },
+    {
+      "id": "smoking",
+      "label": "Smoking",
+      "question": "Do you smoke, or did you smoke during this pregnancy?",
+      "type": "choice",
+      "group": "Habits",
+      "scored": true,
+      "optional": false,
+      "importance": "Medium",
+      "why": "Smoking reduces oxygen and blood flow to the baby. Quitting at any point in pregnancy helps, and quitting early helps most.",
+      "how_used": "Adjusts your estimate by when you smoked. Shown as something you can change, with quit-support links.",
+      "options": [
+        {
+          "value": "never",
+          "label": "Never / quit before pregnancy",
+          "or": 1.0
+        },
+        {
+          "value": "quit_t1",
+          "label": "Quit in the first 3 months",
+          "or": 1.1
+        },
+        {
+          "value": "current",
+          "label": "Still smoking",
+          "or": 1.62
+        },
+        {
+          "value": "current_heavy",
+          "label": "Still smoking, 10+ a day",
+          "or": 2.0
+        }
+      ],
+      "upstream_of": [
+        "small_baby"
+      ],
+      "approx": false,
+      "source": {
+        "label": "CRIBSS IPD: aOR 1.62 for smoking beyond first trimester",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6543252/table/t0010"
+      }
+    },
+    {
+      "id": "secondhand_smoke",
+      "label": "Second-hand smoke",
+      "question": "Are you around other people's smoke most days (at home or work)?",
+      "type": "choice",
+      "group": "Habits",
+      "scored": true,
+      "optional": false,
+      "importance": "Low",
+      "why": "Breathing other people's smoke is linked to a smaller but real increase in risk, even if you don't smoke.",
+      "how_used": "Small adjustment to your estimate.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 1.22
+        }
+      ],
+      "approx": false,
+      "source": {
+        "label": "Escañuela Sánchez et al. 2019 review (OR 1.22)",
+        "url": "https://cora.ucc.ie/bitstream/10468/8796/1/11138.pdf"
+      }
+    },
+    {
+      "id": "alcohol",
+      "label": "Alcohol",
+      "question": "Since you became pregnant, about how many alcoholic drinks do you have in a typical week?",
+      "type": "choice",
+      "group": "Habits",
+      "scored": true,
+      "optional": false,
+      "importance": "High",
+      "why": "Drinking during pregnancy is linked to placental problems. Risk rises steeply at 5 or more drinks a week, and no amount is known to be safe.",
+      "how_used": "Adjusts your estimate. Your answer stays private and is shown as something you can change.",
+      "options": [
+        {
+          "value": "none",
+          "label": "None",
+          "or": 1.0
+        },
+        {
+          "value": "lt1",
+          "label": "Less than 1",
+          "or": 1.0
+        },
+        {
+          "value": "1_4",
+          "label": "1–4",
+          "or": 1.4
+        },
+        {
+          "value": "5p",
+          "label": "5 or more",
+          "or": 2.96
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "Kesmodel et al. 2002 (RR 2.96 for 5+ drinks/week)",
+        "url": "https://manuscript.isc.ac/Inventory/10/262.htm"
+      }
+    },
+    {
+      "id": "substance_use",
+      "label": "Drug use",
+      "question": "During this pregnancy, have you used drugs like opioids (not prescribed), methamphetamine, or cocaine? This is optional and private.",
+      "type": "choice",
+      "group": "Habits",
+      "scored": true,
+      "optional": true,
+      "importance": "High",
+      "why": "Drug use with addiction was one of the risk factors identified by the SCRN study. Getting care is safer than stopping suddenly, and providers can help without judgement.",
+      "how_used": "Adjusts your estimate and adds confidential support options. Never stored or shared.",
+      "options": [
+        {
+          "value": "no",
+          "label": "No",
+          "or": 1.0
+        },
+        {
+          "value": "yes",
+          "label": "Yes",
+          "or": 2.0
+        },
+        {
+          "value": "skip",
+          "label": "Prefer not to say",
+          "or": 1.0
+        }
+      ],
+      "approx": true,
+      "source": {
+        "label": "SCRN Writing Group 2011, JAMA; Escañuela Sánchez et al. 2019",
+        "url": "https://livescience.com/17458-stillbirth-mysteries-revealed-studies.html"
+      }
+    },
+    {
+      "id": "stress_events",
+      "label": "Major stress this year",
+      "question": "In the past 12 months, have you had major stress in any of these areas: money, your relationship or partner, losing someone close, or a frightening or violent event? How many areas?",
+      "type": "choice",
+      "group": "Life and support",
+      "scored": true,
+      "optional": true,
+      "importance": "Medium",
+      "why": "The SCRN study (University of Utah, Emory and partners) found that women with major stress in all four areas had about 2.2× the odds of stillbirth, even after accounting for income and other factors. Stress is common, and support helps.",
+      "how_used": "Adjusts your estimate, and we'll share ways to get support. You can skip this question. Your answer is never stored.",
+      "options": [
+        {
+          "value": "0",
+          "label": "None",
+          "or": 1.0
+        },
+        {
+          "value": "1_2",
+          "label": "1–2 areas",
+          "or": 1.2
+        },
+        {
+          "value": "3",
+          "label": "3 areas",
+          "or": 1.5
+        },
+        {
+          "value": "4",
+          "label": "All 4",
+          "or": 2.22
+        },
+        {
+          "value": "skip",
+          "label": "Prefer not to say",
+          "or": 1.0
+        }
+      ],
+      "approx": false,
+      "source": {
+        "label": "Hogue et al. 2013, Am J Epidemiol (SCRN; aOR 2.22 for all 4)",
+        "url": "https://researchexperts.utmb.edu/en/publications/a-population-based-case-control-study-of-stillbirth-the-relations/"
+      }
+    },
+    {
+      "id": "activity",
+      "label": "Physical activity",
+      "question": "On how many days a week are you active for 30 minutes or more (walking counts)?",
+      "type": "choice",
+      "group": "Habits",
+      "scored": false,
+      "optional": true,
+      "importance": "Context only",
+      "why": "Activity helps with weight and blood sugar, which are linked to stillbirth, but there's no direct estimate of its effect on stillbirth yet.",
+      "how_used": "Not scored. Used only to tailor suggestions.",
+      "options": [
+        {
+          "value": "0",
+          "label": "0 days"
+        },
+        {
+          "value": "1_2",
+          "label": "1–2 days"
+        },
+        {
+          "value": "3p",
+          "label": "3+ days"
+        }
+      ],
+      "approx": false,
+      "source": {
+        "label": "No pooled stillbirth estimate found",
+        "url": "https://ucc.ie/en/pregnancyloss/publications/20191201-modifiable-risk-factors.html"
+      }
+    }
+  ],
+  "us": {
+    "sbr28": 2.57,
+    "sbr28ByRace": {
+      "black": 4.34,
+      "white": 2.23,
+      "hispanic": 2.22,
+      "asian": 1.72,
+      "nhpi": 4.82,
+      "aian": 3.67
+    },
+    "raceNote": "Late (28+ wk) rates from CDC 2024. NHPI and AIAN late rates are not reported; estimated as total rate × (2.57 / 5.44).",
+    "source": {
+      "label": "CDC, Fetal Mortality: United States 2024 (NVSR 75-6)",
+      "url": "https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-06.pdf"
+    }
+  },
+  "countries": [
+    {
+      "iso": "USA",
+      "name": "United States",
+      "sbr28": 2.57,
+      "approxRate": false,
+      "pm25": 7.5,
+      "prev": {
+        "smoking": 0.04,
+        "bmi_over": 0.26,
+        "bmi_obese1": 0.16,
+        "bmi_obese2": 0.14,
+        "age_lt20": 0.04,
+        "age_35_39": 0.19,
+        "age_40p": 0.045,
+        "twins": 0.03
+      },
+      "cities": [
+        {
+          "name": "Los Angeles",
+          "pm25": 12.0
+        },
+        {
+          "name": "San Francisco",
+          "pm25": 9.0
+        },
+        {
+          "name": "New York",
+          "pm25": 8.0
+        },
+        {
+          "name": "Houston",
+          "pm25": 10.0
+        },
+        {
+          "name": "Chicago",
+          "pm25": 9.5
+        },
+        {
+          "name": "Phoenix",
+          "pm25": 9.0
+        },
+        {
+          "name": "Atlanta",
+          "pm25": 9.5
+        }
+      ]
+    },
+    {
+      "iso": "IND",
+      "name": "India",
+      "sbr28": 12.2,
+      "approxRate": true,
+      "pm25": 50,
+      "prev": {
+        "smoking": 0.02,
+        "bmi_over": 0.18,
+        "bmi_obese1": 0.05,
+        "bmi_obese2": 0.02
+      },
+      "cities": [
+        {
+          "name": "Delhi",
+          "pm25": 100
+        },
+        {
+          "name": "Mumbai",
+          "pm25": 45
+        },
+        {
+          "name": "Jaipur",
+          "pm25": 65
+        },
+        {
+          "name": "Bengaluru",
+          "pm25": 30
+        },
+        {
+          "name": "Kolkata",
+          "pm25": 60
+        },
+        {
+          "name": "Chennai",
+          "pm25": 30
+        },
+        {
+          "name": "Lucknow",
+          "pm25": 90
+        }
+      ]
+    },
+    {
+      "iso": "PAK",
+      "name": "Pakistan",
+      "sbr28": 27.5,
+      "approxRate": true,
+      "pm25": 55,
+      "prev": {
+        "smoking": 0.03,
+        "bmi_over": 0.22,
+        "bmi_obese1": 0.09,
+        "bmi_obese2": 0.05
+      },
+      "cities": [
+        {
+          "name": "Lahore",
+          "pm25": 85
+        },
+        {
+          "name": "Karachi",
+          "pm25": 45
+        },
+        {
+          "name": "Islamabad",
+          "pm25": 40
+        }
+      ]
+    },
+    {
+      "iso": "BGD",
+      "name": "Bangladesh",
+      "sbr28": 20.0,
+      "approxRate": true,
+      "pm25": 60,
+      "prev": {
+        "smoking": 0.01,
+        "bmi_over": 0.2,
+        "bmi_obese1": 0.04,
+        "bmi_obese2": 0.01
+      },
+      "cities": [
+        {
+          "name": "Dhaka",
+          "pm25": 80
+        },
+        {
+          "name": "Chittagong",
+          "pm25": 55
+        }
+      ]
+    },
+    {
+      "iso": "NGA",
+      "name": "Nigeria",
+      "sbr28": 22.0,
+      "approxRate": true,
+      "pm25": 40,
+      "prev": {
+        "smoking": 0.01,
+        "bmi_over": 0.22,
+        "bmi_obese1": 0.09,
+        "bmi_obese2": 0.05
+      },
+      "cities": [
+        {
+          "name": "Lagos",
+          "pm25": 45
+        },
+        {
+          "name": "Abuja",
+          "pm25": 35
+        },
+        {
+          "name": "Kano",
+          "pm25": 60
+        }
+      ]
+    },
+    {
+      "iso": "KEN",
+      "name": "Kenya",
+      "sbr28": 19.5,
+      "approxRate": true,
+      "pm25": 25,
+      "prev": {
+        "smoking": 0.01,
+        "bmi_over": 0.22,
+        "bmi_obese1": 0.09,
+        "bmi_obese2": 0.05
+      },
+      "cities": [
+        {
+          "name": "Nairobi",
+          "pm25": 20
+        },
+        {
+          "name": "Mombasa",
+          "pm25": 18
+        }
+      ]
+    },
+    {
+      "iso": "ETH",
+      "name": "Ethiopia",
+      "sbr28": 20.5,
+      "approxRate": true,
+      "pm25": 30,
+      "prev": {
+        "smoking": 0.01,
+        "bmi_over": 0.12,
+        "bmi_obese1": 0.03,
+        "bmi_obese2": 0.01
+      },
+      "cities": [
+        {
+          "name": "Addis Ababa",
+          "pm25": 35
+        }
+      ]
+    },
+    {
+      "iso": "MEX",
+      "name": "Mexico",
+      "sbr28": 7.0,
+      "approxRate": true,
+      "pm25": 20,
+      "prev": {
+        "smoking": 0.05,
+        "bmi_over": 0.3,
+        "bmi_obese1": 0.2,
+        "bmi_obese2": 0.14
+      },
+      "cities": [
+        {
+          "name": "Mexico City",
+          "pm25": 22
+        },
+        {
+          "name": "Guadalajara",
+          "pm25": 20
+        },
+        {
+          "name": "Monterrey",
+          "pm25": 25
+        }
+      ]
+    },
+    {
+      "iso": "BRA",
+      "name": "Brazil",
+      "sbr28": 7.5,
+      "approxRate": true,
+      "pm25": 13,
+      "prev": {
+        "smoking": 0.08,
+        "bmi_over": 0.3,
+        "bmi_obese1": 0.15,
+        "bmi_obese2": 0.1
+      },
+      "cities": [
+        {
+          "name": "São Paulo",
+          "pm25": 16
+        },
+        {
+          "name": "Rio de Janeiro",
+          "pm25": 14
+        }
+      ]
+    },
+    {
+      "iso": "GBR",
+      "name": "United Kingdom",
+      "sbr28": 3.2,
+      "approxRate": true,
+      "pm25": 9,
+      "prev": {
+        "smoking": 0.09,
+        "bmi_over": 0.28,
+        "bmi_obese1": 0.15,
+        "bmi_obese2": 0.1
+      },
+      "cities": [
+        {
+          "name": "London",
+          "pm25": 10
+        },
+        {
+          "name": "Manchester",
+          "pm25": 9
+        }
+      ]
+    },
+    {
+      "iso": "CAN",
+      "name": "Canada",
+      "sbr28": 2.9,
+      "approxRate": true,
+      "pm25": 6.5,
+      "prev": {
+        "smoking": 0.06,
+        "bmi_over": 0.27,
+        "bmi_obese1": 0.14,
+        "bmi_obese2": 0.09
+      },
+      "cities": [
+        {
+          "name": "Toronto",
+          "pm25": 7.5
+        },
+        {
+          "name": "Vancouver",
+          "pm25": 6.5
+        }
+      ]
+    },
+    {
+      "iso": "CHN",
+      "name": "China",
+      "sbr28": 6.5,
+      "approxRate": true,
+      "pm25": 30,
+      "prev": {
+        "smoking": 0.01,
+        "bmi_over": 0.25,
+        "bmi_obese1": 0.06,
+        "bmi_obese2": 0.02
+      },
+      "cities": [
+        {
+          "name": "Beijing",
+          "pm25": 35
+        },
+        {
+          "name": "Shanghai",
+          "pm25": 28
+        }
+      ]
+    },
+    {
+      "iso": "PHL",
+      "name": "Philippines",
+      "sbr28": 11.0,
+      "approxRate": true,
+      "pm25": 18,
+      "prev": {
+        "smoking": 0.03,
+        "bmi_over": 0.2,
+        "bmi_obese1": 0.06,
+        "bmi_obese2": 0.02
+      },
+      "cities": [
+        {
+          "name": "Manila",
+          "pm25": 20
+        }
+      ]
+    },
+    {
+      "iso": "ZAF",
+      "name": "South Africa",
+      "sbr28": 13.0,
+      "approxRate": true,
+      "pm25": 25,
+      "prev": {
+        "smoking": 0.07,
+        "bmi_over": 0.27,
+        "bmi_obese1": 0.2,
+        "bmi_obese2": 0.2
+      },
+      "cities": [
+        {
+          "name": "Johannesburg",
+          "pm25": 30
+        },
+        {
+          "name": "Cape Town",
+          "pm25": 15
+        }
+      ]
+    }
+  ],
+  "cdcCheck": {
+    "description": "US 2024 fetal mortality, 20+ weeks, per 1,000 live births + fetal deaths",
+    "baseline20": 5.44,
+    "source": {
+      "label": "CDC, Fetal Mortality: United States 2024 (NVSR 75-6), Tables 1, 4, 5, A",
+      "url": "https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-06.pdf"
+    },
+    "groups": [
+      {
+        "label": "Age under 20",
+        "set": {
+          "age": "lt20"
+        },
+        "observed": 7.43
+      },
+      {
+        "label": "Age 20–24",
+        "set": {
+          "age": "20_34"
+        },
+        "observed": 5.45,
+        "note": "20–34 band"
+      },
+      {
+        "label": "Age 25–29",
+        "set": {
+          "age": "20_34"
+        },
+        "observed": 4.89,
+        "note": "20–34 band"
+      },
+      {
+        "label": "Age 30–34",
+        "set": {
+          "age": "20_34"
+        },
+        "observed": 4.98,
+        "note": "20–34 band"
+      },
+      {
+        "label": "Age 35–39",
+        "set": {
+          "age": "35_39"
+        },
+        "observed": 5.96
+      },
+      {
+        "label": "Age 40–54",
+        "set": {
+          "age": "40p"
+        },
+        "observed": 8.3
+      },
+      {
+        "label": "Smoker",
+        "set": {
+          "smoking": "current"
+        },
+        "observed": 10.3
+      },
+      {
+        "label": "Nonsmoker",
+        "set": {
+          "smoking": "never"
+        },
+        "observed": 4.84
+      },
+      {
+        "label": "Smoker, 35–39",
+        "set": {
+          "smoking": "current",
+          "age": "35_39"
+        },
+        "observed": 12.94
+      },
+      {
+        "label": "Smoker, 40–54",
+        "set": {
+          "smoking": "current",
+          "age": "40p"
+        },
+        "observed": 15.21
+      },
+      {
+        "label": "Nonsmoker, 40–54",
+        "set": {
+          "smoking": "never",
+          "age": "40p"
+        },
+        "observed": 7.42
+      },
+      {
+        "label": "Twins",
+        "set": {
+          "multiple": "twins"
+        },
+        "observed": 11.45
+      },
+      {
+        "label": "Single baby",
+        "set": {
+          "multiple": "single"
+        },
+        "observed": 5.24
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "danielle",
+  "name": "Danielle, 36: pregnant again after a stillbirth, Atlanta",
+  "source": "StillSafe — User Personas.pdf (Nov 6, 2026). Values not stated in the PDF are filled in: height 5'5\" + weight 186 lb (gives the PDF's BMI ~31), one baby, one previous birth (Maya), no smoking or alcohol, regular OB visits.",
+  "answers": {
+    "weeks": "18",
+    "country": "United States",
+    "city": "Atlanta",
+    "age": 36,
+    "height": "5'5\"",
+    "weight": "186 lb",
+    "race": "black",
+    "multiple": "single",
+    "parity": "1_2",
+    "prior_stillbirth": "yes_unexplained",
+    "preexisting_diabetes": "no",
+    "hypertension": "no",
+    "prenatal_care": "regular",
+    "smoking": "never",
+    "alcohol": "none"
+  },
+  "demo": {
+    "firstMessageSize": 6,
+    "perMessage": 5,
+    "soloFields": ["race", "prior_stillbirth"],
+    "showWhyFor": "race",
+    "voiceField": "prior_stillbirth",
+    "phrases": {
+      "country": "I live in Atlanta, in the US",
+      "city": null,
+      "race": "I'm Black",
+      "parity": "I've given birth once before",
+      "prior_stillbirth": "My daughter Maya was stillborn at 37 weeks, two years ago. They never found a cause",
+      "prenatal_care": "I see my OB regularly"
+    },
+    "highlight": "Questions for your next visit",
+    "followUp": "What should I ask my OB at my next visit?",
+    "intro": "Danielle, 36 · Atlanta\n18 weeks pregnant, after losing her daughter Maya",
+    "returning": {
+      "weeksLater": 3,
+      "title": "Three weeks later\nDanielle comes back after her 20-week scan",
+      "feeling": "A bit anxious, but okay",
+      "phrases": { "small_baby": "My 20-week scan was normal. The baby is measuring fine." },
+      "voiceField": "small_baby",
+      "sameChipTaps": 2,
+      "restSame": "Everything else is the same as last time."
+    }
+  }
+}
