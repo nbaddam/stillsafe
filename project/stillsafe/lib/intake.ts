@@ -140,7 +140,9 @@ export function interpret(id: string, text: string): string | number | undefined
 }
 
 // Rule-based urgent-symptom check, run on every user message (not left to the model).
-const URGENT_RE = /(not|n't|less|stopp?ed|no|reduced|decreased|fewer|slow(ed|er)?)\s+(moving|movements?|kicks?|kicking)|(moving|kicking)\s+(less|much less|a lot less)|(baby|movements?).{0,20}(slowed|changed|stopped)|bleed|blood|leak(ing)?\s+(fluid|water)|waters?\s+broke|severe\s+(pain|headache|cramp)|vision\s+(changes?|blurr)|blurr?y\s+vision/i;
+// "blood" counts as a symptom unless it's part of a routine term ("blood pressure", "blood sugar", "blood test"...),
+// which the questionnaire itself asks about.
+const URGENT_RE = /(not|n't|less|stopp?ed|no|reduced|decreased|fewer|slow(ed|er)?)\s+(moving|movements?|kicks?|kicking)|(moving|kicking)\s+(less|much less|a lot less)|(baby|movements?).{0,20}(slowed|changed|stopped)|bleed|blood(?!\s*(pressure|sugars?|glucose|tests?|work|type|count|levels?|draws?))|leak(ing)?\s+(fluid|water)|waters?\s+broke|severe\s+(pain|headache|cramp)|vision\s+(changes?|blurr)|blurr?y\s+vision/i;
 export function isUrgent(text: string) {
   return URGENT_RE.test(text) && !/no\s+bleeding|not\s+bleeding|no\s+pain/i.test(text) || /^yes, less or different$/i.test(text.trim());
 }
