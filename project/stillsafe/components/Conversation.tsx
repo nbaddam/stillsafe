@@ -75,6 +75,13 @@ export default function Conversation() {
   useEffect(() => {
     if (booted.current) return;
     booted.current = true;
+    // Visiting /?reset clears anything saved on this device and starts fresh (handy for demos and shared devices).
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("reset")) {
+      forgetMemory();
+      url.searchParams.delete("reset");
+      window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+    }
     const m = loadMemory();
     if (m?.enabled && Object.keys(m.answers ?? {}).length) {
       setMem(m);
